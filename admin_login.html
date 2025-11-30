@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #3c0757, #811370);
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+  }
+
+  .admin-login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .admin-login-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    width: 380px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.2s ease;
+  }
+
+  .admin-login-card h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    color: #fff;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+
+  .form-control::placeholder {
+    color: #eee;
+  }
+
+  .btn-login {
+    background: #ff9f43;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.3s;
+  }
+
+  .btn-login:hover {
+    background: #ff6f00;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .gradient-ball {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.6;
+    animation: float 10s ease-in-out infinite;
+  }
+
+  .ball1 {
+    width: 300px;
+    height: 300px;
+    background: #ff9f43;
+    top: 15%;
+    left: 10%;
+  }
+
+  .ball2 {
+    width: 250px;
+    height: 250px;
+    background: #ff4b2b;
+    bottom: 10%;
+    right: 15%;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-30px) translateX(20px); }
+  }
+</style>
+
+<div class="gradient-ball ball1"></div>
+<div class="gradient-ball ball2"></div>
+
+<div class="admin-login-container">
+  <div class="admin-login-card">
+    <h2>Admin Login🖌️</h2>
+    <form method="POST" autocomplete="off">
+      <input type="text" name="username" placeholder="Admin Username" class="form-control" required>
+      <input type="password" name="password" placeholder="Password" class="form-control" required>
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

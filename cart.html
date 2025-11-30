@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Cart</h2>
+{% if items %}
+  <ul class="list-group mb-3">
+    {% for it in items %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ it.art.title }}</strong><br><small>{{ it.art.artist_name }}</small>
+        </div>
+        <div>
+          x{{ it.qty }} — ₹{{ it.subtotal }}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <p class="fw-bold">Total: ₹{{ total }}</p>
+  <form method="post" action="{{ url_for('checkout') }}"><button class="btn btn-primary">Checkout</button></form>
+{% else %}
+  <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

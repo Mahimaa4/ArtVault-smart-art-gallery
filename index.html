@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  /* Background */
+  body {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Gallery container */
+  .gallery-container {
+    padding: 60px 80px;
+    color: #222;
+  }
+
+  /* Card styling */
+  .art-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    background: white;
+  }
+
+  .art-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .art-card img {
+    height: 300px;
+    object-fit: cover;
+  }
+
+  /* Buttons */
+  .btn-view {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .btn-view:hover {
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    transform: scale(1.05);
+  }
+
+  .gallery-title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1a1a1a;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    margin-bottom: 40px;
+  }
+</style>
+<div class="text-center my-5">
+  <blockquote class="blockquote">
+    <p id="quote" class="fs-4 fst-italic text-muted"></p>
+    <footer id="author" class="blockquote-footer mt-2"></footer>
+  </blockquote>
+</div>
+
+<script>
+  const quotes = [
+    { text: "Art enables us to find ourselves and lose ourselves at the same time.", author: "Thomas Merton" },
+    { text: "Every artist was first an amateur.", author: "Ralph Waldo Emerson" },
+    { text: "Art is not what you see, but what you make others see.", author: "Edgar Degas" },
+    { text: "Creativity takes courage.", author: "Henri Matisse" },
+    { text: "Art speaks where words are unable to explain.", author: "Unknown" }
+  ];
+
+  let index = 0;
+  const quoteElem = document.getElementById("quote");
+  const authorElem = document.getElementById("author");
+
+  function showQuote() {
+    quoteElem.textContent = `"${quotes[index].text}"`;
+    authorElem.textContent = quotes[index].author;
+    index = (index + 1) % quotes.length;
+  }
+
+  showQuote();
+  setInterval(showQuote, 10000); // change every 5 seconds
+</script>
+{% if 'user_id' in session %}
+<div class="search-section text-center mb-5">
+  <form action="{{ url_for('search') }}" method="GET" class="d-inline-block search-form">
+    <input 
+      type="text" 
+      name="q" 
+      class="search-input" 
+      placeholder="🔍 Search artworks, artists, or styles..." 
+      value="{{ query or '' }}"
+      required
+    >
+    <button type="submit" class="search-btn">Search</button>
+  </form>
+</div>
+{% endif %}
+{% if no_results %}
+  <div class="alert alert-info text-center mt-4" role="alert">
+    No results found for "<strong>{{ query }}</strong>".
+  </div>
+{% endif %}
+
+
+<div class="gallery-container">
+  <h1 class="gallery-title">✨ Art Gallery ✨</h1>
+  <div class="row g-4">
+    {% for art in artworks %}
+    <div class="col-md-4">
+      <div class="card art-card">
+        {% if art.image_filename %}
+        
+        <img src="{{ url_for('uploaded_file', filename=art.image_filename) }}" class="card-img-top" alt="{{ art.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ art.title }}</h5>
+          <p class="card-text text-muted">{{ art.description or 'No description' }}</p>
+          <p class="mb-1"><small>By {{ art.artist_name or 'Unknown' }}</small></p>
+          <p class="fw-bold text-success">₹ {{ art.price }}</p>
+          <a href="{{ url_for('artwork_detail', artwork_id=art.artwork_id) }}" class="btn btn-view w-100">View</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

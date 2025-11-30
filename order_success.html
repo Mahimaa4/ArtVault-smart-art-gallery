@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Success</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      .success-box {
+        background: #ffffff;
+        padding: 45px 35px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+        max-width: 450px;
+        transition: transform 0.3s ease;
+      }
+
+      .success-box:hover {
+        transform: translateY(-5px);
+      }
+
+      .success-box h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #28a745;
+      }
+
+      .success-box p {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+        color: #333333;
+      }
+
+      .btn-home {
+        background: linear-gradient(90deg, #28a745, #20c997);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+
+      .btn-home:hover {
+        background: linear-gradient(90deg, #218838, #1ca57b);
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="success-box">
+      <h1>🎉 Success!</h1>
+      <p>{{ message }}</p>
+      <p><strong>Total Payable:</strong> ₹{{ "%.2f"|format(total) }}</p>
+      <p><strong>Order ID:</strong> #{{ order_id }}</p>
+      <a class="btn-home" href="{{ url_for('index') }}">Back to Store</a>
+    </div>
+  </body>
+</html>

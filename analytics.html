@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #141E30, #243B55);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .analytics-header {
+    background: linear-gradient(90deg, #ff6f61, #d64f91);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  }
+
+  .chart-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+
+  .chart-box {
+    background: #1f1f1f;
+    border-radius: 15px;
+    padding: 20px;
+    width: 420px;
+    height: 380px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255,255,255,0.1);
+  }
+
+  .recent-artworks {
+    text-align: center;
+  }
+
+  .recent-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .recent-card {
+    background: #222;
+    border-radius: 10px;
+    padding: 10px;
+    width: 180px;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+
+  .recent-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .recent-card img {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+</style>
+
+<div class="analytics-header">
+  <h2>📊 Art Gallery Analytics Dashboard</h2>
+  <p>Visual insights into our artwork collection</p>
+</div>
+
+<div class="container">
+  <div class="chart-section">
+    <div class="chart-box">
+      <h5>🎨 Artwork Price Distribution</h5>
+      <canvas id="priceChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h5>💎 Top 5 Expensive Artworks</h5>
+      <canvas id="expensiveChart"></canvas>
+    </div>
+  </div>
+
+  <div class="recent-artworks">
+    <h4>🕒 Recently Added Artworks</h4>
+    <div class="recent-container">
+      {% for art in recent_artworks %}
+      <div class="recent-card">
+        <img src="{{ url_for('uploaded_file', filename=art.image_filename) }}" alt="{{ art.title }}">
+        <p>{{ art.title }}</p>
+        <small>₹{{ art.price }}</small>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Donut chart for price distribution
+  const priceCtx = document.getElementById('priceChart').getContext('2d');
+  new Chart(priceCtx, {
+    type: 'doughnut',
+    data: {
+      labels: [{% for p in price_data %}'{{ p.price_range }}',{% endfor %}],
+      datasets: [{
+        data: [{% for p in price_data %}{{ p.count }},{% endfor %}],
+        backgroundColor: ['#ff6f61', '#f8b400', '#00bcd4', '#8e44ad'],
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      plugins: { legend: { labels: { color: '#fff' } } }
+    }
+  });
+
+  // Bar chart for top expensive artworks
+  const expCtx = document.getElementById('expensiveChart').getContext('2d');
+  new Chart(expCtx, {
+    type: 'bar',
+    data: {
+      labels: [{% for e in expensive_artworks %}'{{ e.title }}',{% endfor %}],
+      datasets: [{
+        label: 'Price (₹)',
+        data: [{% for e in expensive_artworks %}{{ e.price }},{% endfor %}],
+        backgroundColor: '#ff6f61'
+      }]
+    },
+    options: {
+      scales: {
+        x: { ticks: { color: '#fff' } },
+        y: { ticks: { color: '#fff' } }
+      },
+      plugins: { legend: { labels: { color: '#fff' } } }
+    }
+  });
+</script>
+{% endblock %}
