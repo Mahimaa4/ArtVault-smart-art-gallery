@@ -44,15 +44,6 @@ It supports separate **Admin and User dashboards**, smart inventory control, aut
 
 ---
 
-## 📸 Screenshots
-![User Dashboard](screenshots/user-dashboard.png)  
-![Admin Dashboard](screenshots/admin-dashboard.png)  
-![Analytics](screenshots/analytics.png)  
-![User Profile](screenshots/User-profile.png)  
-![Order History](screenshots/order-History.png)
-
----
-
 ## 🚀 Future Enhancements
 - AI based art recommendation  
 - Payment gateway integration  
